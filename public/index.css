@@ -157,3 +157,57 @@ footer a:hover {
 .credit input:checked ~ pre {
 	display: block;
 }
+/* ===== Top Bar (Balanced & Centered) ===== */
+
+.topbar {
+	position: sticky;
+	top: 0;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;   /* 🔥 centers everything */
+
+	height: 40px;              /* ✅ perfect middle ground */
+	padding: 0 20px;
+
+	background: rgba(0, 0, 0, 0.45);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	z-index: 999;
+}
+
+/* Inner layout wrapper */
+.topbar-inner {
+	display: flex;
+	align-items: center;
+	gap: 26px;                 /* space between logo & links */
+}
+
+/* Logo */
+.topbar .logo {
+	font-size: 15px;           /* ✅ readable but sleek */
+	font-weight: 600;
+
+	background: linear-gradient(90deg, #00d4ff, #7c7cff);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+/* Navigation */
+.nav {
+	display: flex;
+	gap: 16px;
+}
+
+.nav a {
+	text-decoration: none;
+	font-size: 13px;
+	color: rgba(255, 255, 255, 0.7);
+	transition: 0.2s ease;
+}
+
+.nav a:hover {
+	color: white;
+}

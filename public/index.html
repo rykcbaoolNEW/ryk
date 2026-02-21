@@ -18,27 +18,27 @@
 		<script src="search.js" defer></script>
 		<script src="index.js" defer></script>
 	</head>
+	<header class="topbar">
+		<div class="logo">Scramjet</div>
+
+		<nav class="nav">
+			<a href="index.html">Home</a>
+			<a href="g.html">Games</a>
+		</nav>
+	</header>
+
 
 	<body>
 		<div title="Scramjet Logo" class="flex-center logo-wrapper header-center">
-			<img class="logo" src="sj.png" alt="Scramjet" />
-			<h1>Scramjet | MW</h1>
+			<img class="logo" src="img.png" alt="Scramjet" />
 		</div>
-		<div class="flex-center desc left-margin">
-			<p>
-				Scramjet is an experimental interception based web proxy designed to
-				evade internet censorship, bypass arbitrary web browser restrictions and
-				innovate web proxy technologies.
-			</p>
-		</div>
-
 		<form id="sj-form" class="flex-center">
 			<input
 				id="sj-search-engine"
-				value="https://www.google.com/search?q=%s"
+				value="https://www.duckduckgo.com/?q=%s"
 				type="hidden"
 			/>
-			<input id="sj-address" type="text" placeholder="Search the web freely" />
+			<input id="sj-address" type="text" placeholder="Search the web" />
 		</form>
 		<div class="desc left-margin">
 			<p id="sj-error"></p>
@@ -47,19 +47,19 @@
 		<footer>
 			<div>
 				<a
-					title="The Mercury Workshop GitHub organization"
+					title="The Mercury Workshop GitHub"
 					href="https://github.com/MercuryWorkshop"
 					>Mercury Workshop</a
 				>
 				<a
-					title="The example demo app for Scramjet"
+					title="Scramjet source code"
 					href="https://github.com/MercuryWorkshop/Scramjet-Demo"
 					>GitHub</a
 				>
 				<a title="License information" href="credits.html">Credits</a>
 			</div>
 			<div>
-				<span>Scramjet &copy; MW 2025</span>
+				<span>Scramjet</span>
 			</div>
 		</footer>
 	</body>
