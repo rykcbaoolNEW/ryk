@@ -1,0 +1,77 @@
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #0f172a;
+    color: #fff;
+}
+
+
+
+.logo {
+    font-size: 15px;
+    font-weight: 600;
+    background: linear-gradient(90deg, #00d4ff, #7c7cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 13px;
+    transition: 0.2s;
+}
+
+.nav a:hover {
+    color: white;
+}
+
+/* Games Main */
+.games-main {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.game-tabs {
+    margin: 20px 0;
+}
+
+.tab-button {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    padding: 10px 20px;
+    margin: 0 8px;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.25s;
+}
+
+.tab-button.active,
+.tab-button:hover {
+    background: linear-gradient(90deg, #00d4ff, #7c7cff);
+    color: #000;
+}
+
+/* Tab Pages */
+.tab-page {
+    margin-top: 30px;
+}
+
+.play-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 25px;
+    background: linear-gradient(135deg, #00d4ff, #7c7cff);
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.25s;
+}
+
+.play-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,212,255,0.35);
+}

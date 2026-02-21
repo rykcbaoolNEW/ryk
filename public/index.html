@@ -17,15 +17,36 @@
 		<script src="register-sw.js" defer></script>
 		<script src="search.js" defer></script>
 		<script src="index.js" defer></script>
+		<script src="settings.js" defer></script>
+		<script src="theme.js" defer></script>
+
 	</head>
 	<header class="topbar">
-		<div class="logo">Scramjet</div>
 
 		<nav class="nav">
 			<a href="index.html">Home</a>
 			<a href="g.html">Games</a>
+			<a href="apps.html">Apps</a>
+			<a href="settings.html">Settings</a>
 		</nav>
 	</header>
+	<div class="settings-dropdown" id="settings">
+		<label>Search Engine</label>
+		<select id="engine-select">
+			<option value="https://www.duckduckgo.com/?q=%s">DuckDuckGo</option>
+			<option value="https://www.google.com/search?q=%s">Google</option>
+			<option value="https://www.bing.com/search?q=%s">Bing</option>
+		</select>
+
+		<label>Theme</label>
+		<select id="theme-select">
+			<option value="">Dark</option>
+			<option value="light">Light</option>
+			<option value="neon">Neon</option>
+		</select>
+
+		<button onclick="saveSettings()">Save</button>
+	</div>
 
 
 	<body>
@@ -36,31 +57,13 @@
 			<input
 				id="sj-search-engine"
 				value="https://www.duckduckgo.com/?q=%s"
-				type="hidden"
+				type = "hidden"
 			/>
 			<input id="sj-address" type="text" placeholder="Search the web" />
+			<button onclick="openBlank()">Open in about:blank</button>
 		</form>
 		<div class="desc left-margin">
 			<p id="sj-error"></p>
 			<pre id="sj-error-code"></pre>
 		</div>
-		<footer>
-			<div>
-				<a
-					title="The Mercury Workshop GitHub"
-					href="https://github.com/MercuryWorkshop"
-					>Mercury Workshop</a
-				>
-				<a
-					title="Scramjet source code"
-					href="https://github.com/MercuryWorkshop/Scramjet-Demo"
-					>GitHub</a
-				>
-				<a title="License information" href="credits.html">Credits</a>
-			</div>
-			<div>
-				<span>Scramjet</span>
-			</div>
-		</footer>
-	</body>
 </html>

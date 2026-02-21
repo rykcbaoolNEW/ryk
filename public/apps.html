@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scramjet Apps</title>
+    <link rel="stylesheet" href="apps.css" />
+    <link rel="stylesheet" href="index.css" />
+
+</head>
+<body>
+<!-- Top Bar -->
+
+<header class="topbar">
+
+    <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="g.html">Games</a>
+        <a href="apps.html">Apps</a>
+        <a href="settings.html">Settings</a>
+        <script src="theme.js" defer></script>
+    </nav>
+</header>
+<main class="apps-main">
+    <h1>Select an App</h1>
+
+    <div class="app-tabs">
+        <button class="tab-button active" data-app="youtube">YouTube</button>
+        <button class="tab-button" data-app="discord">Discord</button>
+        <button class="tab-button" data-app="twitter">Twitter</button>
+        <button class="tab-button" data-app="duckduckgo">DuckDuckGo</button>
+    </div>
+
+    <div class="tab-content">
+        <iframe name="app-frame" id="app-frame"
+                src="/scramjet/http%3A%2F%2Fyoutube.com%2F" frameborder="0">
+        </iframe>
+    </div>
+</main>
+
+<script src="apps.js" defer></script>
+</body>
+</html>

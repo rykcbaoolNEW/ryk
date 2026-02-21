@@ -7,6 +7,8 @@ body {
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
+	margin: 0;
+	padding-top: 55px;
 }
 
 .flex-center {
@@ -96,6 +98,52 @@ footer a:hover {
 	color: rgba(253, 253, 253, 0.514);
 }
 
+
+.settings-page {
+	max-width: 500px;
+	margin: 40px auto;
+	padding: 20px;
+}
+
+.settings-page h1 {
+	margin-bottom: 25px;
+}
+
+.settings-card {
+	background: var(--sidebar);
+	padding: 15px;
+	border-radius: 10px;
+	margin-bottom: 15px;
+	box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+.settings-card label {
+	display: block;
+	font-size: 14px;
+	opacity: 0.7;
+	margin-bottom: 6px;
+}
+
+.settings-card select {
+	width: 100%;
+	padding: 8px;
+	border-radius: 6px;
+	border: none;
+}
+
+.save-btn {
+	width: 100%;
+	margin-top: 10px;
+	padding: 10px;
+	border-radius: 8px;
+	border: none;
+	background: var(--accent);
+	color: white;
+	cursor: pointer;
+	font-size: 15px;
+}
+
+
 #sj-address {
 	background: none;
 	font-family: inherit;
@@ -154,9 +202,161 @@ footer a:hover {
 	content: "hide license";
 }
 
+.settings-panel {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: var(--sidebar);
+	padding: 25px;
+	border-radius: 12px;
+	width: 280px;
+	box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+	display: none;
+}
+
+.settings-panel h2 {
+	margin-top: 0;
+}
+
+.settings-panel label {
+	display: block;
+	margin-top: 15px;
+	font-size: 14px;
+	opacity: 0.7;
+}
+
+.settings-panel select,
+.settings-panel button {
+	width: 100%;
+	margin-top: 6px;
+	padding: 8px;
+	border-radius: 6px;
+	border: none;
+}
+
+.settings-panel button {
+	background: var(--accent);
+	color: white;
+	cursor: pointer;
+}
+
+.settings-btn {
+	position: fixed;
+	top: 15px;
+	right: 15px;
+	background: var(--sidebar);
+	color: var(--text);
+	border: none;
+	font-size: 18px;
+	padding: 8px 10px;
+	border-radius: 8px;
+	cursor: pointer;
+}
+.topbar {
+	height: 55px;
+	background: var(--sidebar);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 15px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 1000;
+}
+
+.topbar-controls button {
+	background: var(--accent);
+	border: none;
+	color: white;
+	padding: 6px 10px;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+/* Dropdown */
+
+.settings-dropdown {
+	position: fixed;
+	top: 60px;
+	right: 15px;
+	background: var(--sidebar);
+	padding: 15px;
+	border-radius: 10px;
+	width: 260px;
+	box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+
+	opacity: 0;
+	transform: translateY(-10px);
+	pointer-events: none;
+	transition: 0.2s ease;
+}
+
+.settings-dropdown.show {
+	opacity: 1;
+	transform: translateY(0);
+	pointer-events: all;
+}
+
+.settings-dropdown label {
+	display: block;
+	font-size: 13px;
+	opacity: 0.6;
+	margin-top: 10px;
+}
+
+.settings-dropdown select,
+.settings-dropdown button {
+	width: 100%;
+	margin-top: 5px;
+	padding: 7px;
+	border-radius: 6px;
+	border: none;
+}
+
+.settings-dropdown button {
+	background: var(--accent);
+	color: white;
+	cursor: pointer;
+}
+
+:root {
+	--bg: #0f1115;
+	--sidebar: #151922;
+	--accent: #4c8dff;
+	--text: #ffffff;
+}
+
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--text);
+	font-family: sans-serif;
+}
+
+/* Themes */
+
+body.light {
+	--bg: #f5f5f5;
+	--sidebar: #ffffff;
+	--accent: #4c8dff;
+	--text: #111;
+}
+
+body.neon {
+	--bg: #050507;
+	--sidebar: #0c0c12;
+	--accent: #00ffcc;
+	--text: #00ffcc;
+}
+
 .credit input:checked ~ pre {
 	display: block;
 }
+
+
 /* ===== Top Bar (Balanced & Centered) ===== */
 
 .topbar {
@@ -170,7 +370,7 @@ footer a:hover {
 	height: 40px;              /* ✅ perfect middle ground */
 	padding: 0 20px;
 
-	background: rgba(0, 0, 0, 0.45);
+	background: rgb(0, 1, 17);
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);
 

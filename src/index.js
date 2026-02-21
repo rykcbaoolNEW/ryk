@@ -7,11 +7,10 @@ import fastifyStatic from "@fastify/static";
 
 import { scramjetPath } from "@mercuryworkshop/scramjet/path";
 import { libcurlPath } from "@mercuryworkshop/libcurl-transport";
-import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
+import { baremuxPath, BareMuxServer } from "@mercuryworkshop/bare-mux/node";
+
 
 const publicPath = fileURLToPath(new URL("../public/", import.meta.url));
-
-// Wisp Configuration: Refer to the documentation at https://www.npmjs.com/package/@mercuryworkshop/wisp-js
 
 logging.set_level(logging.NONE);
 Object.assign(wisp.options, {
@@ -61,20 +60,41 @@ fastify.register(fastifyStatic, {
 fastify.setNotFoundHandler((res, reply) => {
 	return reply.code(404).type("text/html").sendFile("404.html");
 });
+// -------------------- BareMux Setup -------------------- //
+const baremuxServer = new BareMuxServer({ port: 8001 });
+
+// Create clients for apps
+baremuxServer.createClient({
+	name: "youtube",
+	allow: ["https://www.youtube.com/*"]
+});
+
+baremuxServer.createClient({
+	name: "discord",
+	allow: ["https://discord.com/*"]
+});
+
+baremuxServer.createClient({
+	name: "twitter",
+	allow: ["https://twitter.com/*"]
+});
+
+baremuxServer.createClient({
+	name: "duckduckgo",
+	allow: ["https://www.duckduckgo.com/*"]
+});
+
+// Start BareMux server
+baremuxServer.listen();
+console.log("BareMux server running with clients for YouTube, Discord, Twitter, DuckDuckGo");
+
+// -------------------- Start Fastify -------------------- //
 
 fastify.server.on("listening", () => {
 	const address = fastify.server.address();
-
-	// by default we are listening on 0.0.0.0 (every interface)
-	// we just need to list a few
 	console.log("Listening on:");
 	console.log(`\thttp://localhost:${address.port}`);
 	console.log(`\thttp://${hostname()}:${address.port}`);
-	console.log(
-		`\thttp://${
-			address.family === "IPv6" ? `[${address.address}]` : address.address
-		}:${address.port}`
-	);
 });
 
 process.on("SIGINT", shutdown);
@@ -87,10 +107,6 @@ function shutdown() {
 }
 
 let port = parseInt(process.env.PORT || "");
-
 if (isNaN(port)) port = 8000;
 
-fastify.listen({
-	port: port,
-	host: "0.0.0.0",
-});
+fastify.listen({ port: port, host: "0.0.0.0" });

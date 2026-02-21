@@ -21,6 +21,22 @@ const error = document.getElementById("sj-error");
 const errorCode = document.getElementById("sj-error-code");
 
 const { ScramjetController } = $scramjetLoadController();
+const engineInput = document.getElementById("sj-search-engine");
+const engineSelect = document.getElementById("engine-select");
+const themeSelect = document.getElementById("theme-select");
+
+document.addEventListener("DOMContentLoaded", () => {
+
+	const engineInput = document.getElementById("sj-search-engine");
+
+	const savedEngine = localStorage.getItem("searchEngine");
+	const savedTheme = localStorage.getItem("theme");
+
+	if (savedEngine && engineInput)
+		engineInput.value = savedEngine;
+
+	document.body.className = savedTheme || "";
+});
 
 const scramjet = new ScramjetController({
 	files: {
@@ -30,9 +46,20 @@ const scramjet = new ScramjetController({
 	},
 });
 
+function openBlank() {
+	const win = window.open("about:blank", "_blank");
+	win.document.write(`
+		<iframe 
+			src="${window.location.href}" 
+			style="border:none; width:100vw; height:100vh;"
+		></iframe>
+	`);
+}
+
 scramjet.init();
 
 const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
+
 
 form.addEventListener("submit", async (event) => {
 	event.preventDefault();
