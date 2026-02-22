@@ -12,8 +12,8 @@ importers:
         specifier: ^8.2.0
         version: 8.2.0
       '@mercuryworkshop/bare-mux':
-        specifier: ^2.1.7
-        version: 2.1.7
+        specifier: 2.0.1
+        version: 2.0.1
       '@mercuryworkshop/libcurl-transport':
         specifier: ^1.5.2
         version: 1.5.2
@@ -123,6 +123,9 @@ packages:
   '@lukeed/ms@2.0.2':
     resolution: {integrity: sha512-9I2Zn6+NJLfaGoz9jN3lpwDgAYvfGeNYdbAIjJOqzs4Tpc+VU3Jqq4IofSUBKajiDS8k9fZIg18/z13mpk1bsA==}
     engines: {node: '>=8'}
+
+  '@mercuryworkshop/bare-mux@2.0.1':
+    resolution: {integrity: sha512-94YThllV9sWSb5hzIDg+U0JSNfFdkvOq6j5wwV1OON3izZhrKSsdDOkaywS5WP6HE/jm0/0ZYaYixbf8u3kjYg==}
 
   '@mercuryworkshop/bare-mux@2.1.7':
     resolution: {integrity: sha512-BUamyc7jsIFbWQVVWjVjaD+Wot77EPwolkrbP3UuIs6QeHR1RY52+IR2fq3GkRAbOOrAZNT7EgZSsupkh1NowQ==}
@@ -896,6 +899,8 @@ snapshots:
       wrap-ansi-cjs: wrap-ansi@7.0.0
 
   '@lukeed/ms@2.0.2': {}
+
+  '@mercuryworkshop/bare-mux@2.0.1': {}
 
   '@mercuryworkshop/bare-mux@2.1.7': {}
 

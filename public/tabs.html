@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabs System</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #111;
+      color: #fff;
+    }
+    header.topbar {
+      position: fixed;       /* keep it always visible */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50px;          /* adjust as needed */
+      background-color: #222;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      box-sizing: border-box;
+    }
+
+    /* Add spacing below topbar */
+    body {
+      padding-top: 50px;     /* same as topbar height */
+    }
+
+    /* Tab bar sits below topbar */
+    .tab-bar {
+      display: flex;
+      background-color: #222;
+      border-bottom: 1px solid #444;
+      padding: 0 10px;
+      height: 40px;
+      align-items: center;
+      margin-bottom: 0;
+    }
+
+    /* Tab content sits below tab bar */
+    .tab-content {
+      width: 100vw;
+      height: calc(95vh - 50px - 40px); /* 95% of viewport minus topbar & tab-bar */
+      position: relative;
+      margin-top: 0;
+    }
+
+    /* Topbar / Tab buttons */
+    .tab-bar {
+      display: flex;
+      background-color: #222;
+      border-bottom: 1px solid #444;
+      padding: 0 10px;
+      height: 40px;
+      align-items: center;
+    }
+
+    .tab-bar button {
+      background: #222;
+      border: none;
+      color: #fff;
+      padding: 8px 16px;
+      margin-right: 4px;
+      cursor: pointer;
+      border-radius: 4px 4px 0 0;
+      transition: background 0.2s;
+    }
+
+    .tab-bar button.active {
+      background: #555;
+    }
+
+    .tab-bar .close-btn {
+      margin-left: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #f55;
+    }
+
+    /* Container for iframes */
+    .tab-content {
+      width: 100vw;
+      height: 95vh; /* leave 5% for topbar or padding */
+      position: relative;
+    }
+
+    .tab-content iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    /* Add new tab button */
+    #addTabBtn {
+      margin-left: auto;
+      padding: 6px 12px;
+      background: #333;
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    #addTabBtn:hover {
+      background: #555;
+    }
+  </style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="logo">ryk</div>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="g.html">Games</a>
+      <a href="apps.html">Apps</a>
+      <a href="tabs.html">Tabs</a>
+      <a href="settings.html">Settings</a>
+    </nav>
+  </div>
+</header>
+<link rel="stylesheet" href="index.css" />
+
+
+<div class="tab-bar" id="tabBar">
+  <button class="tab-button active" data-url="tabs-backbone.html">Tab 1</button>
+  <button id="addTabBtn">+ New Tab</button>
+</div>
+
+<div class="tab-content" id="tabContent">
+  <iframe src="tabs-backbone.html" class="tab-frame"></iframe>
+</div>
+
+<script>
+  const tabBar = document.getElementById("tabBar");
+  const tabContent = document.getElementById("tabContent");
+  const addTabBtn = document.getElementById("addTabBtn");
+
+  let tabCount = 1; // Track number of tabs
+
+  // Function to create a new tab
+  function createTab(url = "tabs-backbone.html") {
+    tabCount++;
+    const title = "Tab " + tabCount;
+
+    // Deactivate all existing tabs
+    document.querySelectorAll(".tab-bar button.tab-button").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-content iframe").forEach(f => f.style.display = "none");
+
+    // Create new tab button
+    const btn = document.createElement("button");
+    btn.classList.add("tab-button", "active");
+    btn.textContent = title;
+
+    // Close button
+    const closeBtn = document.createElement("span");
+    closeBtn.textContent = "×";
+    closeBtn.classList.add("close-btn");
+    btn.appendChild(closeBtn);
+
+    tabBar.insertBefore(btn, addTabBtn); // add before "+ New Tab" button
+
+    // Create iframe
+    const iframe = document.createElement("iframe");
+    iframe.src = url;
+    tabContent.appendChild(iframe);
+
+    // Button click switches tab
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".tab-bar button.tab-button").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".tab-content iframe").forEach(f => f.style.display = "none");
+      btn.classList.add("active");
+      iframe.style.display = "block";
+    });
+
+    // Close button removes tab
+    closeBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isActive = btn.classList.contains("active");
+      btn.remove();
+      iframe.remove();
+      if(isActive) {
+        const lastBtn = tabBar.querySelector(".tab-button");
+        if(lastBtn) lastBtn.click();
+      }
+    });
+
+    // Activate this tab
+    btn.click();
+  }
+
+  // Initial tab click setup
+  document.querySelector(".tab-bar .tab-button").addEventListener("click", () => {
+    document.querySelectorAll(".tab-bar button.tab-button").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-content iframe").forEach(f => f.style.display = "none");
+    document.querySelector(".tab-bar .tab-button").classList.add("active");
+    document.querySelector(".tab-content iframe").style.display = "block";
+  });
+
+  // "+ New Tab" button
+  addTabBtn.addEventListener("click", () => createTab());
+
+</script>
+</body>
+</html>

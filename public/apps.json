@@ -1,0 +1,32 @@
+[
+  {
+    "name": "YouTube",
+    "icon": "/icons/youtube.png",
+    "url": "https://www.youtube.com"
+  },
+  {
+    "name": "Discord",
+    "icon": "/icons/discord.jpg",
+    "url": "https://discord.com"
+  },
+  {
+    "name": "Twitter",
+    "icon": "/icons/x.png",
+    "url": "https://twitter.com"
+  },
+  {
+    "name": "Tiktok",
+    "icon": "/icons/tiktok.jpg",
+    "url": "https://www.tiktok.com/"
+  },
+  {
+    "name": "Spotify",
+    "icon": "/icons/spotify.png",
+    "url": "https://spotify.com/"
+  },
+  {
+    "name": "Chatgpt",
+    "icon": "/icons/chatgpt.svg",
+    "url": "https://chatgpt.com"
+  }
+]

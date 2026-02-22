@@ -23,3 +23,9 @@ async function registerSW() {
 
 	await navigator.serviceWorker.register(stockSW);
 }
+
+if ('serviceWorker' in navigator) {
+	navigator.serviceWorker.register('/scram/sw.js')
+		.then(() => console.log("Scramjet SW registered"))
+		.catch(console.error);
+}

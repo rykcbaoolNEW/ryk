@@ -1,43 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Scramjet Apps</title>
-    <link rel="stylesheet" href="apps.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apps</title>
+
     <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="apps.css" />
+
+    <script src="theme.js" defer></script>
+    <script src="/scram/scramjet.all.js"></script>
+    <script src="/baremux/index.js"></script>
+    <script src="register-sw.js" defer></script>
+    <script src="search.js" defer></script>
+    <script src="index.js" defer></script>
 
 </head>
 <body>
-<!-- Top Bar -->
 
 <header class="topbar">
-
-    <nav class="nav">
-        <a href="index.html">Home</a>
-        <a href="g.html">Games</a>
-        <a href="apps.html">Apps</a>
-        <a href="settings.html">Settings</a>
-        <script src="theme.js" defer></script>
-    </nav>
+    <div class="topbar-inner">
+        <div class="logo">ryk</div>
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="g.html">Games</a>
+            <a href="apps.html">Apps</a>
+            <a href="tabs.html">Tabs</a>
+            <a href="settings.html">Settings</a>
+        </nav>
+    </div>
 </header>
-<main class="apps-main">
-    <h1>Select an App</h1>
 
-    <div class="app-tabs">
-        <button class="tab-button active" data-app="youtube">YouTube</button>
-        <button class="tab-button" data-app="discord">Discord</button>
-        <button class="tab-button" data-app="twitter">Twitter</button>
-        <button class="tab-button" data-app="duckduckgo">DuckDuckGo</button>
-    </div>
-
-    <div class="tab-content">
-        <iframe name="app-frame" id="app-frame"
-                src="/scramjet/http%3A%2F%2Fyoutube.com%2F" frameborder="0">
-        </iframe>
-    </div>
+<main>
+    <h1>Apps</h1>
+    <div id="app-container" class="apps-grid"></div>
 </main>
 
-<script src="apps.js" defer></script>
+<script type="module">
+    "use strict";
+
+    async function initApps() {
+        // Make sure Scramjet is loaded
+        if (!window.$scramjetLoadController) {
+            console.error("Scramjet scripts not loaded yet.");
+            return;
+        }
+
+        // Initialize Scramjet
+        const { ScramjetController } = $scramjetLoadController();
+        const scramjet = new ScramjetController({
+            files: {
+                wasm: "/scram/scramjet.wasm.wasm",
+                all: "/scram/scramjet.all.js",
+                sync: "/scram/scramjet.sync.js",
+            },
+        });
+        await scramjet.init();
+
+        // Create BareMux connection
+        const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
+        const wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
+        await connection.setTransport("/libcurl/index.mjs", [{ websocket: wispUrl }]);
+
+        async function ensureTransport() {
+            if ((await connection.getTransport()) === null) {
+                const wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
+                await connection.setTransport("/libcurl/index.mjs", [{ websocket: wispUrl }]);
+            }
+        }
+
+        async function navigateScramjet(appUrl) {
+            // Hide app grid
+            document.getElementById("app-container").style.display = "none";
+
+            try {
+                await ensureTransport();
+
+                // Create Scramjet frame
+                const frame = scramjet.createFrame();
+                frame.frame.id = "sj-frame";
+                frame.frame.style.position = "fixed";
+                frame.frame.style.top = "0";
+                frame.frame.style.left = "0";
+                frame.frame.style.width = "100vw";
+                frame.frame.style.height = "95vh";  // 95% of viewport height
+                frame.frame.style.top = "5vh";      // push down 5% so topbar shows
+
+                // Optional: fallback src so iframe is not blank before Scramjet fully loads
+                frame.frame.src = appUrl;
+
+                document.body.appendChild(frame.frame);
+
+                // Navigate via Scramjet
+                await frame.go(appUrl);
+
+                // Optional: add a close button
+                const closeBtn = document.createElement("button");
+                closeBtn.textContent = "× Close App";
+                closeBtn.style.position = "fixed";
+                closeBtn.style.top = "10px";
+                closeBtn.style.right = "10px";
+                closeBtn.style.zIndex = "1000000";
+                closeBtn.style.fontSize = "18px";
+                closeBtn.style.padding = "6px 12px";
+                closeBtn.style.background = "#333";
+                closeBtn.style.color = "#fff";
+                closeBtn.style.border = "none";
+                closeBtn.style.borderRadius = "4px";
+                closeBtn.style.cursor = "pointer";
+                document.body.appendChild(closeBtn);
+
+                closeBtn.addEventListener("click", () => {
+                    frame.frame.remove();
+                    closeBtn.remove();
+                    document.getElementById("app-container").style.display = "grid";
+                });
+
+            } catch (err) {
+                console.error("Failed to open app:", err);
+                // fallback: open in new tab if Scramjet fails
+                window.open(appUrl, "_blank");
+                document.getElementById("app-container").style.display = "grid";
+            }
+        }
+
+        // Load apps.json
+        try {
+            const res = await fetch("/apps.json");
+            const apps = await res.json();
+            const grid = document.getElementById("app-container");
+
+            apps.forEach(app => {
+                const card = document.createElement("div");
+                card.className = "app-card";
+
+                const img = document.createElement("img");
+                img.src = app.icon;
+                img.alt = app.name;
+                img.style.width = "100%";
+                img.style.borderRadius = "8px";
+
+                const name = document.createElement("span");
+                name.textContent = app.name;
+                name.style.display = "block";
+                name.style.marginTop = "8px";
+                name.style.fontWeight = "600";
+
+                card.appendChild(img);
+                card.appendChild(name);
+                grid.appendChild(card);
+
+                // Correct closure: pass app.url explicitly
+                card.addEventListener("click", async () => {
+                    await navigateScramjet(app.url);
+                });
+            });
+        } catch (err) {
+            console.error("Failed to load apps.json:", err);
+            document.getElementById("app-container").textContent = "Failed to load apps.";
+        }
+    }
+
+    // Initialize everything
+    initApps();
+</script>
 </body>
 </html>

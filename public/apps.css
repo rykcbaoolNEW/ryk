@@ -1,72 +1,84 @@
-body {
-    margin: 0;
-    font-family: system-ui, -apple-system, sans-serif;
-    background: #0f172a;
-    color: #fff;
+/* ==============================
+   Base app container
+   ============================== */
+#app {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff; /* text white on dark background */
+    background-color: #111; /* full page black */
+    min-height: 100vh;
+    padding: 20px;
 }
 
-.topbar {
-    position: sticky;
-    top: 0;
+/* ==============================
+   Grid layout
+   ============================== */
+#app-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* ==============================
+   App cards / cubes
+   ============================== */
+.app-card {
+    background-color: #111; /* black cube */
+    border: 1px solid #222; /* subtle border for separation */
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    align-items: center;
-    height: 38px;
-    background: rgba(0,0,0,0.45);
-    backdrop-filter: blur(10px);
-    z-index: 999;
-}
-
-.topbar-inner {
-    display: flex;
-    align-items: center;
-    gap: 26px;
-}
-
-.logo {
-    font-size: 15px;
-    font-weight: 600;
-    background: linear-gradient(90deg,#00d4ff,#7c7cff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.nav a {
-    color: rgba(255,255,255,0.7);
-    text-decoration: none;
-    font-size: 13px;
-    transition: 0.2s;
-}
-
-.nav a:hover { color: white; }
-
-.apps-main { text-align: center; padding: 20px; }
-
-.app-tabs { margin: 20px 0; }
-
-.tab-button {
-    background: rgba(255,255,255,0.1);
-    border: none;
-    padding: 8px 18px;
-    margin: 0 6px;
-    border-radius: 8px;
-    color: white;
+    padding: 20px;
     cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.app-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+}
+
+/* ==============================
+   App card images
+   ============================== */
+.app-card img {
+    width: 80px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+/* ==============================
+   App card text
+   ============================== */
+.app-card span {
+    font-size: 16px;
     font-weight: 600;
-    transition: 0.25s;
+    text-align: center;
 }
 
-.tab-button.active,
-.tab-button:hover {
-    background: linear-gradient(90deg,#00d4ff,#7c7cff);
-    color: #000;
+
+
+/* Responsive Topbar */
+@media (max-width: 768px) {
+    .topbar {
+        padding: 0 15px;
+    }
+    .nav a {
+        padding: 4px 8px;
+        font-size: 13px;
+    }
 }
 
-.tab-content { margin-top: 20px; }
-
-#app-frame {
-    width: 100%;
-    height: 80vh;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.1);
+/* ==============================
+   Responsive
+   ============================== */
+@media (max-width: 600px) {
+    #app-container {
+        grid-template-columns: 1fr;
+    }
 }
