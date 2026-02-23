@@ -55,7 +55,31 @@
 </div>
 
 <main class="content">
+	<button id="discordBtn">Join Discord</button>
+	<script>
+		const discordBtn = document.getElementById("discordBtn");
+		discordBtn.addEventListener("click", () => {
+			// Opens the Discord invite in a new tab
+			window.open("https://discord.gg/pXSsZeF7sy", "_blank");
+		});
+	</script>
+	<style>
+		/* Optional styling to make the button look nicer */
+		#discordBtn {
+			padding: 10px 20px;
+			background-color: #7289DA; /* Discord purple */
+			color: white;
+			border: none;
+			border-radius: 6px;
+			cursor: pointer;
+			font-weight: bold;
+			transition: background 0.2s;
+		}
 
+		#discordBtn:hover {
+			background-color: #5b6eae;
+		}
+	</style>
 	<!-- Logo -->
 	<div class="home-logo">
 		<img class="main-logo" src="img.png" alt="Scramjet" />
@@ -69,6 +93,7 @@
 				type="hidden"
 		/>
 		<input id="sj-address" type="text" placeholder="Search the web" />
+
 	</form>
 	<script>
 		async function waitForScramjet(timeout = 5000) {
