@@ -1,0 +1,374 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Games Hub</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Inter, Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+        }
+
+        /* ================= THEMES ================= */
+
+        body.dark { --a:#111; --b:#222; --c:#5c7cff; }
+        body.light { --a:#f5f5f5; --b:#ffffff; --c:#0078ff; color:black; }
+        body.neon { --a:#05010d; --b:#130022; --c:#ff00ff; }
+        body.ocean { --a:#021024; --b:#04395e; --c:#00eaff; }
+        body.sunset { --a:#2b1055; --b:#7597de; --c:#ff9966; }
+
+        /* ================= BACKGROUND ================= */
+
+        .background {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(-45deg, var(--a), var(--b), var(--a));
+            background-size: 400% 400%;
+            animation: bg 12s ease infinite;
+            z-index: -2;
+        }
+
+        @keyframes bg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* floating blobs */
+        .blob {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: var(--c);
+            opacity: 0.15;
+            filter: blur(120px);
+            animation: float 20s infinite alternate;
+        }
+
+        .blob:nth-child(1){top:10%;left:10%}
+        .blob:nth-child(2){bottom:10%;right:15%;animation-duration:25s}
+
+        @keyframes float {
+            from { transform: translateY(0); }
+            to { transform: translateY(-150px); }
+        }
+
+        /* ================= LAYOUT ================= */
+
+        .app {
+            display: flex;
+            height: 100%;
+            backdrop-filter: blur(8px);
+        }
+
+        .sidebar {
+            width: 240px;
+            background: rgba(255,255,255,0.08);
+            padding: 16px;
+        }
+
+        .sidebar h2 { margin-top:0; }
+
+        .sidebar button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: transparent;
+            color: inherit;
+            cursor: pointer;
+            transition: .25s;
+        }
+
+        .sidebar button:hover {
+            border-color: var(--c);
+            box-shadow: 0 0 12px var(--c);
+        }
+
+        .main {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        header {
+            padding: 20px;
+            font-size: 26px;
+            text-align: center;
+        }
+
+        /* ================= GRID ================= */
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+            gap: 18px;
+            padding: 20px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: .3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) rotateX(4deg);
+            box-shadow: 0 0 30px var(--c);
+        }
+
+        .thumb {
+            height: 140px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background: rgba(0,0,0,.4);
+        }
+
+        .thumb img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .title {
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* ================= LAUNCHER ================= */
+
+        .launcher {
+            position: fixed;
+            inset: 0;
+            display: none;
+            flex-direction: column;
+            background: rgba(0,0,0,0.9);
+        }
+
+        .launcher.active { display:flex; }
+
+        .launcher-bar {
+            padding: 10px;
+            display:flex;
+            gap:10px;
+            background: rgba(255,255,255,0.1);
+        }
+
+        iframe { flex:1; border:none; }
+    </style>
+</head>
+
+<body class="neon">
+
+<div class="background">
+    <div class="blob"></div>
+    <div class="blob"></div>
+</div>
+
+<div class="app">
+    <div class="sidebar">
+        <h2>Themes</h2>
+        <button onclick="setTheme('dark')">Dark</button>
+        <button onclick="setTheme('light')">Light</button>
+        <button onclick="setTheme('neon')">Neon</button>
+        <button onclick="setTheme('ocean')">Ocean</button>
+        <button onclick="setTheme('sunset')">Sunset</button>
+        <h2></h2>
+    </div>
+
+    <div class="main">
+        <header>Ryks Games Hub</header>
+        <div class="grid" id="grid"></div>
+    </div>
+</div>
+
+<div class="launcher" id="launcher">
+    <div class="launcher-bar">
+        <button onclick="closeGame()">Back</button>
+        <button onclick="openNew()">New Tab</button>
+    </div>
+    <iframe id="frame"></iframe>
+</div>
+
+<script>
+    const games = [
+        {
+            "name": "1v1lol",
+            "html": "assets/1v1lol/game.html",
+            "image": "assets/1v1lol/game.png"
+        },
+        {
+            "name": "2048",
+            "html": "assets/2048/game.html",
+            "image": "assets/2048/game.png"
+        },
+        {
+            "name": "99 nights",
+            "html": "assets/99 nights/game.html",
+            "image": "assets/99 nights/game.png"
+        },
+        {
+            "name": "among us",
+            "html": "assets/among us/game.html",
+            "image": "assets/among us/game.png"
+        },
+        {
+            "name": "aquar park",
+            "html": "assets/aquar park/game.html",
+            "image": "assets/aquar park/game.png"
+        },
+        {
+            "name": "bit life",
+            "html": "assets/bit life/game.html",
+            "image": "assets/bit life/game.png"
+        },
+        {
+            "name": "bit planes",
+            "html": "assets/bit planes/game.htm",
+            "image": "assets/bit planes/game.png"
+        },
+        {
+            "name": "block blast",
+            "html": "assets/block blast/game.html",
+            "image": "assets/block blast/game.png"
+        },
+        {
+            "name": "cookie clicker",
+            "html": "assets/cookie clicker/game.html",
+            "image": "assets/cookie clicker/game.png"
+        },
+        {
+            "name": "crazy cars",
+            "html": "assets/crazy cars/game.html",
+            "image": "assets/crazy cars/game.png"
+        },
+        {
+            "name": "crossy road",
+            "html": "assets/crossy road/game.htm",
+            "image": "assets/crossy road/game.png"
+        },
+        {
+            "name": "drift boss",
+            "html": "assets/drift boss/game.html",
+            "image": "assets/drift boss/game.png"
+        },
+        {
+            "name": "drive mad",
+            "html": "assets/drive mad/game.htm",
+            "image": "assets/drive mad/game.png"
+        },
+        {
+            "name": "escape road",
+            "html": "assets/escape road/game.html",
+            "image": "assets/escape road/game.png"
+        },
+        {
+            "name": "escape road 2",
+            "html": "assets/escape road 2/game.html",
+            "image": "assets/escape road 2/game.png"
+        },
+        {
+            "name": "flapy bird",
+            "html": "assets/flapy bird/game.html",
+            "image": "assets/flapy bird/game.png"
+        },
+        {
+            "name": "geometry dash",
+            "html": "assets/geometry dash/game.html",
+            "image": "assets/geometry dash/game.png"
+        },
+        {
+            "name": "highway racer",
+            "html": "assets/highway racer/game.html",
+            "image": "assets/highway racer/game.png"
+        },
+        {
+            "name": "minecraft 1.12.2",
+            "html": "assets/minecraft 1.12.2/game.html",
+            "image": "assets/minecraft 1.12.2/game.png"
+        },
+        {
+            "name": "NautilusOS",
+            "html": "assets/NautilusOS/game.html",
+            "image": "assets/NautilusOS/game.png"
+        },
+        {
+            "name": "poly track",
+            "html": "assets/poly track/game.html",
+            "image": "assets/poly track/game.png"
+        },
+        {
+            "name": "retro bowl",
+            "html": "assets/retro bowl/game.html",
+            "image": "assets/retro bowl/game.png"
+        },
+        {
+            "name": "slither.io",
+            "html": "assets/slither.io/game.html",
+            "image": "assets/slither.io/game.png"
+        },
+        {
+            "name": "slope",
+            "html": "assets/slope/game.html",
+            "image": "assets/slope/game.png"
+        },
+        {
+            "name": "space waves",
+            "html": "assets/space waves/game.html",
+            "image": "assets/space waves/game.png"
+        }
+    ];
+    const grid = document.getElementById("grid");
+    const launcher = document.getElementById("launcher");
+    const frame = document.getElementById("frame");
+
+    function render() {
+        grid.innerHTML = "";
+        games.forEach(g => {
+            const c = document.createElement("div");
+            c.className = "card";
+            c.innerHTML = `
+      <div class="thumb"><img src="${g.image}"></div>
+      <div class="title">${g.name}</div>
+    `;
+            c.onclick = () => {
+                frame.src = g.html;
+                launcher.classList.add("active");
+                window.current = g;
+            };
+            grid.appendChild(c);
+        });
+    }
+
+    function closeGame(){
+        launcher.classList.remove("active");
+        frame.src="";
+    }
+
+    function openNew(){
+        const w = open("about:blank");
+        w.document.write(`<iframe src="${current.html}" style="width:100%;height:100%;border:none"></iframe>`);
+    }
+
+    function setTheme(t){
+        document.body.className = t;
+        localStorage.setItem("theme", t);
+    }
+
+    document.body.className = localStorage.getItem("theme") || "neon";
+    render();
+</script>
+
+</body>
+</html>
